@@ -10,7 +10,7 @@
 use strict;
 
 
-my $sim_rep_file = $ARGV[3] # "/home/local/ARCS/xw2629/software/hyper-editing/unique_simple_repeats.txt"; # if needed insert the proper path to the file
+my $sim_rep_file = $ARGV[3]; # "/home/local/ARCS/xw2629/software/hyper-editing/unique_simple_repeats.txt"; # if needed insert the proper path to the file
 
 my $max_letter = 0.6;
 my $min_letter = 0.1;

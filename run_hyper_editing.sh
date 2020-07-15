@@ -27,7 +27,7 @@ ue_detect_args="$9 ${10} ${11} ${12} ${13} ${14} ${15}"  # args meaning: -Min of
 unmapped_script="pre_unmapped.sh" # if needed insert the proper path before the script name
 TransRun_script="TransRun.sh" # if needed insert the proper path before the script name
 analyse_mm_script="analyse_mm.sh" # if needed insert the proper path before the script name
-detectUE_script="detect_ue.pl" # if needed insert the proper path before the script name
+detectHE_script="detect_ue.pl" # if needed insert the proper path before the script name
 
 #files and directories
 unmap_dir="$dir_pre/unMap"
@@ -47,7 +47,7 @@ elif [ $PE == 0 ]; then
 fi
 arg_stat_det="$stat_files/detect.$args"
 log_file="$dir_pre/log.$args"
-UE_detect_dir_pre="$dir_pre/UEdetect.$args"
+HE_detect_dir_pre="$dir_pre/HEdetect.$args"
 
 if [ $bwa_run == 1 ]; then
 mkdir $dir_pre
@@ -55,7 +55,7 @@ mkdir $stat_files
 > $general_stat # clear existing file or open new if not exist
 fi
 
-mkdir $UE_detect_dir_pre 
+mkdir $HE_detect_dir_pre 
 mkdir $Trans_run_dir 
 mkdir $unmap_dir  
 mkdir $analyseMM_dir 
@@ -92,15 +92,15 @@ if [ $PE == 1 ] && [ $PE_1 == 1 ]; then
 	first_out_pre=$out_pre
 	PE_1=2
 elif [ $PE == 1 ] && [ $PE_1 == 2 ]; then
-	echo "Start detection UE of $file_path pair in `date`" >> $log_file
-	$detectUE_script $analyseMM_dir/$first_out_pre.analyseMM $UE_detect_dir_pre/$first_out_pre $arg_stat_det $ue_detect_args $SamTools_soft $PE $GAP $unmap_dir/$out_pre.aln.bam $unmap_dir/$out_pre.mem.bam 
-	$detectUE_script $analyseMM_dir/$out_pre.analyseMM $UE_detect_dir_pre/$out_pre $arg_stat_det $ue_detect_args $SamTools_soft $PE $GAP $unmap_dir/$first_out_pre.aln.bam $unmap_dir/$first_out_pre.mem.bam 
-	echo "End detection UE of $file_path pair in `date`" >> $log_file
+	echo "Start detection HE of $file_path pair in `date`" >> $log_file
+	$detectHE_script $analyseMM_dir/$first_out_pre.analyseMM $HE_detect_dir_pre/$first_out_pre $arg_stat_det $ue_detect_args $SamTools_soft $PE $GAP $unmap_dir/$out_pre.aln.bam $unmap_dir/$out_pre.mem.bam 
+	$detectHE_script $analyseMM_dir/$out_pre.analyseMM $HE_detect_dir_pre/$out_pre $arg_stat_det $ue_detect_args $SamTools_soft $PE $GAP $unmap_dir/$first_out_pre.aln.bam $unmap_dir/$first_out_pre.mem.bam 
+	echo "End detection HE of $file_path pair in `date`" >> $log_file
 	PE_1=1
 elif [ $PE == 0 ]; then
-	echo "Start detection UE of $file_path in `date`" >> $log_file
-	$detectUE_script $analyseMM_dir/$out_pre.analyseMM $UE_detect_dir_pre/$out_pre $arg_stat_det $ue_detect_args $SamTools_soft $PE  
-	echo "End detection UE of $file_path in `date`" >> $log_file
+	echo "Start detection HE of $file_path in `date`" >> $log_file
+	$detectHE_script $analyseMM_dir/$out_pre.analyseMM $HE_detect_dir_pre/$out_pre $arg_stat_det $ue_detect_args $SamTools_soft $PE  
+	echo "End detection HE of $file_path in `date`" >> $log_file
 fi
 
 done<$source_dir

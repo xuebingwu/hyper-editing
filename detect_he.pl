@@ -69,19 +69,19 @@ my %align_mm = ('A2G' => 0,'G2A' => 0,'A2C' => 0,'C2A' => 0, 'G2C' => 0,'A2T' =>
 my %clust_mm = ('A2G' => 0,'G2A' => 0,'A2C' => 0,'C2A' => 0, 'G2C' => 0,'A2T' => 0);
 my %edit_ind = ('A2G' => 0,'G2A' => 0,'A2C' => 0,'C2A' => 0, 'G2C' => 0,'A2T' => 0);  ##### updated 14/04/14
 
-my $UE_dir = "$out_pre.UE.bed_files";
+my $HE_dir = "$out_pre.HE.bed_files";
 my $ES_dir = "$out_pre.ES.bed_files";
 
-mkpath ($UE_dir);
+mkpath ($HE_dir);
 mkpath ($ES_dir);
 
 open (my $f_statistic,">>$stat_file");
 select((select($f_statistic), $|=1)[0]);
 
-open (my $ue_list,">$out_pre.UE.list");
+open (my $ue_list,">$out_pre.HE.list");
 select((select($ue_list), $|=1)[0]);
 
-open (my $ue_det,">$out_pre.UE.Details");
+open (my $ue_det,">$out_pre.HE.Details");
 select((select($ue_det), $|=1)[0]);
 
 open (my $InFile,$source_file);
@@ -93,7 +93,7 @@ my %es_bed_files = ();
 foreach my $edit_type (keys %count_ue)
 {
  
-    my $bed_file =">$UE_dir/$edit_type.bed";
+    my $bed_file =">$HE_dir/$edit_type.bed";
 
     my $es_bed_file =">$ES_dir/$edit_type.bed";
 
@@ -514,8 +514,8 @@ while (<$InFile>)
 	     
     }
 
-#the hit is UE
-#record the UE
+#the hit is HE
+#record the HE
 
 
     my $dna_seq = substr($ref_seq,1,$read_len); #ref_seq included 2 bases at the ends
@@ -637,7 +637,7 @@ while (<$InFile>)
 }
 
 
-print $f_statistic "\nStatistic of detection UE of $out_pre\n";
+print $f_statistic "\nStatistic of detection HE of $out_pre\n";
 print $f_statistic "(Arguments: $ARGV[3]\t$ARGV[4]\t$ARGV[5]\t$ARGV[6]\t$ARGV[7]\t$ARGV[8]\t$ARGV[9])\n";
 
 #print $f_statistic "\ncount_orig_reads\tcount_uniq_loc\n$count_orig_reads\t$count_uniq_loc\n";
@@ -662,7 +662,7 @@ if ($PE == 1)
 }
 
 print $f_statistic "\t".
-"\tUE".
+"\tHE".
 "\tavg_lens".
 "\tedit_sites".
 "\tavg_es".

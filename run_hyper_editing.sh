@@ -1,12 +1,13 @@
 
 
-#command line: $run_he_script $genome_bwa_ind $genome_trans_bwa_ind $genome_fasta $Q $PE $GAP $dir_pre $bwa_run $ue_detect_args $source_dir $bwa_aln_soft $bwa_mem_soft $SamToFastq_soft $SamTools_soft
+#command line: $run_he_script $genome_bwa_ind $genome_trans_bwa_ind $genome_fasta $Q $PE $GAP $dir_pre $bwa_run $ue_detect_args $source_dir $bwa_aln_soft $bwa_mem_soft $SamToFastq_soft $SamTools_soft $sim_rep_file
 ##########################################################################################
 
 bwa_aln_soft=${17} # full path + tool name
 bwa_mem_soft=${18} # full path + tool name
 SamToFastq_soft=${19} # full path + tool name
 SamTools_soft=${20} # full path + tool name
+sim_rep_file=${21} # simple repeat file
 
 source_dir=${16}  # line per each src_fastq_file: path/full_name[tab]out_pre #### for PE files each path+full_name will appear in different line with same out_pre for both files!!! 
 genome_bwa_ind=$1 # path+prefix of the index genome expected 5 files like: prefix.amb, prefix.ann, prefix.bwt, prefix.pac, prefix.sa
@@ -82,7 +83,7 @@ if [ $bwa_run == 1 ] || ([ $bwa_run == 0 ] && [ ! -f "$analyseMM_dir/$out_pre.an
 echo "Start run $file_path in `date`" >> $log_file
 
 $unmapped_script $file_path $genome_bwa_ind $Q $PE $unmap_dir $dir_pre/$out_pre $general_stat $bwa_aln_soft $bwa_mem_soft $SamToFastq_soft $SamTools_soft   
-$TransRun_script $genome_trans_bwa_ind $unmap_dir/$out_pre.mem.um.fastq $Trans_run_dir/$out_pre $out_pre $general_stat $bwa_aln_soft $SamTools_soft
+$TransRun_script $genome_trans_bwa_ind $unmap_dir/$out_pre.mem.um.fastq $Trans_run_dir/$out_pre $out_pre $general_stat $bwa_aln_soft $SamTools_soft $sim_rep_file
 $analyse_mm_script $genome_fasta $Trans_run_dir/$out_pre/bamFiles $analyseMM_dir/$out_pre $general_stat $SamTools_soft
 echo "End mapping and mm analysis of $file_path in `date`" >> $log_file
 fi

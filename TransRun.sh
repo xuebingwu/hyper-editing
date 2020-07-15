@@ -7,6 +7,7 @@ statistic=$5
 
 bwa_aln_soft=$6 # full path + tool name
 SamToolsView_soft="$7 view" # full path + tool name
+sim_rep_file=$8
 
 transform_script="fastq_transform.pl" # if needed insert the proper path before the script name
 get_orig_script="Get_orig_read.pl" # if needed insert the proper path before the script name
@@ -65,7 +66,7 @@ $SamToolsView_soft -bS $bam_files/a2g++.$align_origReads.sam -o $bam_files/a2g++
 
 
 #filtering the reads
-$filter_sam_script $bam_files/a2g++.$align_origReads.sam $reject_files $filter_statistic > $bam_files/a2g++.$align_FilterReads.sam
+$filter_sam_script $bam_files/a2g++.$align_origReads.sam $reject_files $filter_statistic $sim_rep_file > $bam_files/a2g++.$align_FilterReads.sam 
 $SamToolsView_soft -bS $bam_files/a2g++.$align_FilterReads.sam -o $bam_files/a2g++.$align_FilterReads.bam 
 cat $filter_statistic.a2g++ >> $statistic
 echo "" >> $statistic
@@ -96,7 +97,7 @@ $SamToolsView_soft -bS $bam_files/a2g+-.$align_origReads.sam -o $bam_files/a2g+-
 
 
 #filtering the reads
-$filter_sam_script $bam_files/a2g+-.$align_origReads.sam $reject_files $filter_statistic > $bam_files/a2g+-.$align_FilterReads.sam
+$filter_sam_script $bam_files/a2g+-.$align_origReads.sam $reject_files $filter_statistic $sim_rep_file > $bam_files/a2g+-.$align_FilterReads.sam 
 $SamToolsView_soft -bS $bam_files/a2g+-.$align_FilterReads.sam -o $bam_files/a2g+-.$align_FilterReads.bam 
 cat $filter_statistic.a2g+- >> $statistic
 echo "" >> $statistic
@@ -125,7 +126,7 @@ $SamToolsView_soft -bS $bam_files/a2g-+.$align_origReads.sam -o $bam_files/a2g-+
 
 
 #filtering the reads
-$filter_sam_script $bam_files/a2g-+.$align_origReads.sam $reject_files $filter_statistic > $bam_files/a2g-+.$align_FilterReads.sam
+$filter_sam_script $bam_files/a2g-+.$align_origReads.sam $reject_files $filter_statistic $sim_rep_file > $bam_files/a2g-+.$align_FilterReads.sam 
 $SamToolsView_soft -bS $bam_files/a2g-+.$align_FilterReads.sam -o $bam_files/a2g-+.$align_FilterReads.bam 
 cat $filter_statistic.a2g-+ >> $statistic
 echo "" >> $statistic
@@ -155,7 +156,7 @@ $SamToolsView_soft -bS $bam_files/a2g--.$align_origReads.sam -o $bam_files/a2g--
 
 
 #filtering the reads
-$filter_sam_script $bam_files/a2g--.$align_origReads.sam $reject_files $filter_statistic > $bam_files/a2g--.$align_FilterReads.sam
+$filter_sam_script $bam_files/a2g--.$align_origReads.sam $reject_files $filter_statistic $sim_rep_file > $bam_files/a2g--.$align_FilterReads.sam 
 $SamToolsView_soft -bS $bam_files/a2g--.$align_FilterReads.sam -o $bam_files/a2g--.$align_FilterReads.bam 
 cat $filter_statistic.a2g-- >> $statistic
 echo "" >> $statistic
@@ -185,7 +186,7 @@ $SamToolsView_soft -bS $bam_files/a2c++.$align_origReads.sam -o $bam_files/a2c++
 
 
 #filtering the reads
-$filter_sam_script $bam_files/a2c++.$align_origReads.sam $reject_files $filter_statistic > $bam_files/a2c++.$align_FilterReads.sam
+$filter_sam_script $bam_files/a2c++.$align_origReads.sam $reject_files $filter_statistic $sim_rep_file > $bam_files/a2c++.$align_FilterReads.sam 
 $SamToolsView_soft -bS $bam_files/a2c++.$align_FilterReads.sam -o $bam_files/a2c++.$align_FilterReads.bam 
 cat $filter_statistic.a2c++ >> $statistic
 echo "" >> $statistic
@@ -214,7 +215,7 @@ $SamToolsView_soft -bS $bam_files/a2c+-.$align_origReads.sam -o $bam_files/a2c+-
 
 
 #filtering the reads
-$filter_sam_script $bam_files/a2c+-.$align_origReads.sam $reject_files $filter_statistic > $bam_files/a2c+-.$align_FilterReads.sam
+$filter_sam_script $bam_files/a2c+-.$align_origReads.sam $reject_files $filter_statistic $sim_rep_file > $bam_files/a2c+-.$align_FilterReads.sam
 $SamToolsView_soft -bS $bam_files/a2c+-.$align_FilterReads.sam -o $bam_files/a2c+-.$align_FilterReads.bam 
 cat $filter_statistic.a2c+- >> $statistic
 echo "" >> $statistic
@@ -243,7 +244,7 @@ $SamToolsView_soft -bS $bam_files/a2c-+.$align_origReads.sam -o $bam_files/a2c-+
 
 
 #filtering the reads
-$filter_sam_script $bam_files/a2c-+.$align_origReads.sam $reject_files $filter_statistic > $bam_files/a2c-+.$align_FilterReads.sam
+$filter_sam_script $bam_files/a2c-+.$align_origReads.sam $reject_files $filter_statistic $sim_rep_file > $bam_files/a2c-+.$align_FilterReads.sam
 $SamToolsView_soft -bS $bam_files/a2c-+.$align_FilterReads.sam -o $bam_files/a2c-+.$align_FilterReads.bam 
 cat $filter_statistic.a2c-+ >> $statistic
 echo "" >> $statistic
@@ -273,7 +274,7 @@ $SamToolsView_soft -bS $bam_files/a2c--.$align_origReads.sam -o $bam_files/a2c--
 
 
 #filtering the reads
-$filter_sam_script $bam_files/a2c--.$align_origReads.sam $reject_files $filter_statistic > $bam_files/a2c--.$align_FilterReads.sam
+$filter_sam_script $bam_files/a2c--.$align_origReads.sam $reject_files $filter_statistic $sim_rep_file > $bam_files/a2c--.$align_FilterReads.sam 
 $SamToolsView_soft -bS $bam_files/a2c--.$align_FilterReads.sam -o $bam_files/a2c--.$align_FilterReads.bam 
 cat $filter_statistic.a2c-- >> $statistic
 echo "" >> $statistic
@@ -303,7 +304,7 @@ $SamToolsView_soft -bS $bam_files/g2c++.$align_origReads.sam -o $bam_files/g2c++
 
 
 #filtering the reads
-$filter_sam_script $bam_files/g2c++.$align_origReads.sam $reject_files $filter_statistic > $bam_files/g2c++.$align_FilterReads.sam
+$filter_sam_script $bam_files/g2c++.$align_origReads.sam $reject_files $filter_statistic $sim_rep_file > $bam_files/g2c++.$align_FilterReads.sam 
 $SamToolsView_soft -bS $bam_files/g2c++.$align_FilterReads.sam -o $bam_files/g2c++.$align_FilterReads.bam 
 cat $filter_statistic.g2c++ >> $statistic
 echo "" >> $statistic
@@ -330,7 +331,7 @@ $get_orig_script $bam_files/temp3.sam $source_file > $bam_files/g2c+-.$align_ori
 $SamToolsView_soft -bS $bam_files/g2c+-.$align_origReads.sam -o $bam_files/g2c+-.$align_origReads.bam 
 
 #filtering the reads
-$filter_sam_script $bam_files/g2c+-.$align_origReads.sam $reject_files $filter_statistic > $bam_files/g2c+-.$align_FilterReads.sam
+$filter_sam_script $bam_files/g2c+-.$align_origReads.sam $reject_files $filter_statistic $sim_rep_file > $bam_files/g2c+-.$align_FilterReads.sam 
 $SamToolsView_soft -bS $bam_files/g2c+-.$align_FilterReads.sam -o $bam_files/g2c+-.$align_FilterReads.bam 
 cat $filter_statistic.g2c+- >> $statistic
 echo "" >> $statistic
@@ -357,7 +358,7 @@ $get_orig_script $bam_files/temp3.sam $source_file > $bam_files/a2t++.$align_ori
 $SamToolsView_soft -bS $bam_files/a2t++.$align_origReads.sam -o $bam_files/a2t++.$align_origReads.bam 
 
 #filtering the reads
-$filter_sam_script $bam_files/a2t++.$align_origReads.sam $reject_files $filter_statistic > $bam_files/a2t++.$align_FilterReads.sam
+$filter_sam_script $bam_files/a2t++.$align_origReads.sam $reject_files $filter_statistic $sim_rep_file > $bam_files/a2t++.$align_FilterReads.sam 
 $SamToolsView_soft -bS $bam_files/a2t++.$align_FilterReads.sam -o $bam_files/a2t++.$align_FilterReads.bam
 cat $filter_statistic.a2t++ >> $statistic
 echo "" >> $statistic
@@ -384,7 +385,7 @@ $get_orig_script $bam_files/temp3.sam $source_file > $bam_files/a2t+-.$align_ori
 $SamToolsView_soft -bS $bam_files/a2t+-.$align_origReads.sam -o $bam_files/a2t+-.$align_origReads.bam 
 
 #filtering the reads
-$filter_sam_script $bam_files/a2t+-.$align_origReads.sam $reject_files $filter_statistic > $bam_files/a2t+-.$align_FilterReads.sam
+$filter_sam_script $bam_files/a2t+-.$align_origReads.sam $reject_files $filter_statistic $sim_rep_file > $bam_files/a2t+-.$align_FilterReads.sam 
 $SamToolsView_soft -bS $bam_files/a2t+-.$align_FilterReads.sam -o $bam_files/a2t+-.$align_FilterReads.bam
 cat $filter_statistic.a2t+- >> $statistic
 echo "" >> $statistic

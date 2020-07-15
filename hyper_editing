@@ -7,8 +7,9 @@ help () {
  echo "Options:"
  echo "    -fastq <FILE>    Input fastq file (read1/mate1 if paired-end)"
  echo "    -fastq2 <FILE>   Input fastq file, read2/mate2, only for paired-end data"
- echo "    -sra_id <STR>       Use fastq-dump to get fastq files from a SRA ID (SRR***)"
+ echo "    -sra_id <STR>    Use fastq-dump to get fastq files from a SRA ID (SRR***)"
  echo "    -genome <PATH>   Path to genome *.fa and bwa index"
+ echo "    -repeat <FILE>   Simple repeat file (default provided)"
  echo "    -prefix <STR>    Sample name/output prefix"
  echo "    -gap <N>         Gap max size between the pairs (default=50000)"  
  echo "    -skip_bwa        Skip bwa mapping if output exists"
@@ -28,7 +29,9 @@ prefix="test"
 phred="33"
 gap="50000"
 bwa_run="1"
+sim_rep_file="/home/local/ARCS/xw2629/software/hyper-editing/unique_simple_repeats.txt"
 ue_detect_args="0.05 0.6 30 0.6 0.1 0.8 0.2" # args meaning: -Min of edit sites at Ultra-Edit read -Min fraction of edit sites/mm sites -Min sequence quality for counting editing event -Max fraction of same letter in cluster -Min of cluster length -Max initiate index of cluster -Min ending index of cluster
+
 
 # parse commandline arguments
 while [ $# -gt 0 ]
@@ -42,6 +45,7 @@ do
         -gap) gap=$2; shift;;
         -phred64) phred="64";;
         -skip_bwa) bwa_run="0";;
+	-repeat) sim_rep_file=$2; shift;;
         -h) help;exit 0;;
         --help) help;exit 0;;
 	--) shift; break;;
@@ -97,7 +101,7 @@ echo "Phred score offset:" $phred
 echo "Max gap b/w pairs :" $gap
 echo "BWA run           :" $bwa_run
 echo "ue_detect_args    :" $ue_detect_args
-
+echo "Simple repeat file:" $sim_rep_file
 
 echo "-------input file(s)-------"
 cat $prefix.file_list
@@ -125,4 +129,4 @@ genome_fasta=$genome.fa # path+full_name of the fasta file of the original genom
 
 ################################################################################################
 
-$run_he_script $genome_bwa_ind $genome_trans_bwa_ind $genome_fasta $phred $paired_end $gap "hyper-editing-"$prefix $bwa_run $ue_detect_args $source_file $bwa_aln_soft $bwa_mem_soft $SamToFastq_soft $SamTools_soft
+$run_he_script $genome_bwa_ind $genome_trans_bwa_ind $genome_fasta $phred $paired_end $gap "hyper-editing-"$prefix $bwa_run $ue_detect_args $source_file $bwa_aln_soft $bwa_mem_soft $SamToFastq_soft $SamTools_soft $sim_rep_file

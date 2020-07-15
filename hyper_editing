@@ -1,0 +1,128 @@
+#!/bin/bash
+
+help () {
+ echo ""
+ echo "Usage: hyper_editing [Options] -sra_id SRR***** | -fastq r1.fastq [-fastq2 r2.fastq]"
+ echo ""
+ echo "Options:"
+ echo "    -fastq <FILE>    Input fastq file (read1/mate1 if paired-end)"
+ echo "    -fastq2 <FILE>   Input fastq file, read2/mate2, only for paired-end data"
+ echo "    -sra_id <STR>       Use fastq-dump to get fastq files from a SRA ID (SRR***)"
+ echo "    -genome <PATH>   Path to genome *.fa and bwa index"
+ echo "    -prefix <STR>    Sample name/output prefix"
+ echo "    -gap <N>         Gap max size between the pairs (default=50000)"  
+ echo "    -skip_bwa        Skip bwa mapping if output exists"
+ echo "    -phred64         Set PHRED score offset to 64 (default=33)"
+ echo ""
+ echo "Required to run:"
+ echo "    bwa, bam2fastx, samtools, and fastq-dump if use -sra"
+}
+
+# default values
+fastq=""
+fastq2=""
+sra_id=""
+paired_end="0" # 0 => single end, 1 => paired end
+genome="/home/local/ARCS/xw2629/genomes/sequences/hg38"
+prefix="test"
+phred="33"
+gap="50000"
+bwa_run="1"
+ue_detect_args="0.05 0.6 30 0.6 0.1 0.8 0.2" # args meaning: -Min of edit sites at Ultra-Edit read -Min fraction of edit sites/mm sites -Min sequence quality for counting editing event -Max fraction of same letter in cluster -Min of cluster length -Max initiate index of cluster -Min ending index of cluster
+
+# parse commandline arguments
+while [ $# -gt 0 ]
+do
+    case "$1" in
+        -fastq) fastq="$2"; shift;;
+        -fastq2) fastq2="$2"; shift;;
+        -sra_id) sra_id="$2"; shift;;
+        -genome) genome=$2; shift;;
+        -prefix) prefix=$2; shift;;
+        -gap) gap=$2; shift;;
+        -phred64) phred="64";;
+        -skip_bwa) bwa_run="0";;
+        -h) help;exit 0;;
+        --help) help;exit 0;;
+	--) shift; break;;
+	-*)
+	    echo '';echo "****** unknown option: $1 ******";echo ''; 1>&2; help; exit 1;;
+	*)  break;;	# terminate while loop
+    esac
+    shift
+done
+
+# prepare source file
+if [ -n "$fastq" ];then 
+	fastq_path=$(realpath $fastq)
+ 	echo $fastq_path'	'$prefix > $prefix.file_list
+
+	# if paired-end
+	if [ -n "$fastq2" ];then
+        paired_end="1"
+  		fastq2_path=$(realpath $fastq2)
+  		echo $fastq2_path'	'$prefix >> $prefix.file_list
+ 	fi
+elif [ -n "$sra_id" ];then 
+  	echo "running fastq-dump to get the fastq files from SRA"
+    echo "---------fastq-dump:start----------"
+  	fastq-dump --split-3 $sra_id
+    echo "---------fastq-dump:end----------"
+
+	if [ -f "$sra_id.fastq" ];then
+    		fastq_path=$(realpath $sra_id.fastq)
+    		echo $fastq_path'  '$prefix > $prefix.file_list
+  	elif [ -f $sra_id\_1.fastq ] && [ -f $sra_id\_2.fastq ];then
+            paired_end="1"
+    		fastq1_path=$(realpath $sra_id\_1.fastq)
+    		fastq2_path=$(realpath $sra_id\_2.fastq)
+    		echo $fastq1_path'  '$prefix > $prefix.file_list
+    		echo $fastq2_path'  '$prefix >> $prefix.file_list
+  	else
+    		echo "fastq-dump error. Exit!"
+    		exit
+  	fi
+else
+  	echo "ERROR: need to specify input using either -sra or -fastq1 [and -fastq2 if paired-end] "
+  	help
+    exit 1
+fi
+
+
+echo "Sample name/prefix:" $prefix
+echo "Output folder     :" "hyper-editing-"$prefix
+echo "Genome index      :" $genome
+echo "Paired-end        :" $paired_end
+echo "Phred score offset:" $phred
+echo "Max gap b/w pairs :" $gap
+echo "BWA run           :" $bwa_run
+echo "ue_detect_args    :" $ue_detect_args
+
+
+echo "-------input file(s)-------"
+cat $prefix.file_list
+echo "---------------------------"
+
+
+echo "--start--hyper-editing-pipeline--"
+
+##########################################################################################
+
+run_he_script="run_hyper_editing.sh" # if needed insert the proper path before the script name
+
+bwa_aln_soft="bwa" # if needed insert the proper path before the tool name
+bwa_mem_soft="bwa" # if needed insert the proper path before the tool name
+SamToFastq_soft="bam2fastx" # if needed insert the proper path before the tool name
+SamTools_soft="samtools" # if needed insert the proper path before the tool name
+
+source_file=$prefix.file_list # path+full_name of the input files to run: fastq_file_path+name	/TAB/ out_prefix (if the input files are of paired-end reads, each of the paired files should appear in separate line).
+
+genome_bwa_ind=$genome # path+prefix of the index genome expected 5 files like: prefix.amb, prefix.ann, prefix.bwt, prefix.pac, prefix.sa
+
+genome_trans_bwa_ind=$genome # path+prefix of the index transformed genome: for each of the 6 transformed (a2c a2g a2t g2c t2c t2g)=>tt: 5 files: prefix.tt.amb, prefix.tt.ann, prefix.tt.bwt, prefix.tt.pac, prefix.tt.sa + 1 fasta file prefix.tt.fa => tot 36 files
+
+genome_fasta=$genome.fa # path+full_name of the fasta file of the original genome
+
+################################################################################################
+
+$run_he_script $genome_bwa_ind $genome_trans_bwa_ind $genome_fasta $phred $paired_end $gap "hyper-editing-"$prefix $bwa_run $ue_detect_args $source_file $bwa_aln_soft $bwa_mem_soft $SamToFastq_soft $SamTools_soft

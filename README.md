@@ -1,6 +1,11 @@
 # hyper-editing
-Detect RNA hyper-editing events from RNA-seq (local fastq files or SRA ID).
+Detect RNA editing and hyper-editing events from RNA-seq (local fastq files or SRA ID).
+
 Modified from https://github.com/hagitpt/Hyper-editing
+
+Reference:
+
+[A genome-wide map of hyper-edited RNA reveals numerous new sites](https://www.nature.com/articles/ncomms5726),Hagit T. Porath, Shai Carmi & Erez Y. Levanon, Nature Communications 5: 4726 (2014) 
 
 ```
 Usage: hyper_editing [Options] -sra_id SRR***** | -fastq r1.fastq [-fastq2 r2.fastq]
@@ -23,5 +28,5 @@ Example:
 
 hyper_editing -sra_id SRR948734
 hyper_editing -fastq data/input.fq
-hyper_editing -fastq data/r1.fq -fastq2 r2.fq
+hyper_editing -fastq data/r1.fq -fastq2 data/r2.fq
 ```

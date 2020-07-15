@@ -1,6 +1,6 @@
 
 
-#command line: $run_he_script $genome_bwa_ind $genome_trans_bwa_ind $genome_fasta $Q $PE $GAP $dir_pre $bwa_run $ue_detect_args $source_dir $bwa_aln_soft $bwa_mem_soft $SamToFastq_soft $SamTools_soft $sim_rep_file
+#command line: $run_he_script $genome_bwa_ind $genome_trans_bwa_ind $genome_fasta $Q $PE $GAP $dir_pre $bwa_run $he_detect_args $source_dir $bwa_aln_soft $bwa_mem_soft $SamToFastq_soft $SamTools_soft $sim_rep_file
 ##########################################################################################
 
 bwa_aln_soft=${17} # full path + tool name
@@ -18,7 +18,7 @@ PE=$5 # 0 => single end, 1 => paired end
 GAP=$6 # gap max size between the pairs
 dir_pre=$7 # path+full_name of the output directory
 bwa_run=$8 # 0 => pipeline will not run BWA mapping if analyseMM file exists, 1 => first run of the source files, pipeline will begin with BWA mapping 
-ue_detect_args="$9 ${10} ${11} ${12} ${13} ${14} ${15}"  # args meaning: -Min of edit sites at Ultra-Edit read -Min fraction of edit sites/mm sites -Min sequence quality for counting editing event -Max fraction of same letter in cluster -Min of cluster length -Max initiate index of cluster -Min ending index of cluster
+he_detect_args="$9 ${10} ${11} ${12} ${13} ${14} ${15}"  # args meaning: -Min of edit sites at Ultra-Edit read -Min fraction of edit sites/mm sites -Min sequence quality for counting editing event -Max fraction of same letter in cluster -Min of cluster length -Max initiate index of cluster -Min ending index of cluster
 
 
 ##########################################################################################
@@ -38,7 +38,7 @@ general_stat="$stat_files/general"
 
 ##########################################################################################
 
-args=`echo $ue_detect_args | tr " " "_"`
+args=`echo $he_detect_args | tr " " "_"`
 
 if [ $PE == 1 ]; then
 	args="PE_$args" 
@@ -93,13 +93,13 @@ if [ $PE == 1 ] && [ $PE_1 == 1 ]; then
 	PE_1=2
 elif [ $PE == 1 ] && [ $PE_1 == 2 ]; then
 	echo "Start detection HE of $file_path pair in `date`" >> $log_file
-	$detectHE_script $analyseMM_dir/$first_out_pre.analyseMM $HE_detect_dir_pre/$first_out_pre $arg_stat_det $ue_detect_args $SamTools_soft $PE $GAP $unmap_dir/$out_pre.aln.bam $unmap_dir/$out_pre.mem.bam 
-	$detectHE_script $analyseMM_dir/$out_pre.analyseMM $HE_detect_dir_pre/$out_pre $arg_stat_det $ue_detect_args $SamTools_soft $PE $GAP $unmap_dir/$first_out_pre.aln.bam $unmap_dir/$first_out_pre.mem.bam 
+	$detectHE_script $analyseMM_dir/$first_out_pre.analyseMM $HE_detect_dir_pre/$first_out_pre $arg_stat_det $he_detect_args $SamTools_soft $PE $GAP $unmap_dir/$out_pre.aln.bam $unmap_dir/$out_pre.mem.bam 
+	$detectHE_script $analyseMM_dir/$out_pre.analyseMM $HE_detect_dir_pre/$out_pre $arg_stat_det $he_detect_args $SamTools_soft $PE $GAP $unmap_dir/$first_out_pre.aln.bam $unmap_dir/$first_out_pre.mem.bam 
 	echo "End detection HE of $file_path pair in `date`" >> $log_file
 	PE_1=1
 elif [ $PE == 0 ]; then
 	echo "Start detection HE of $file_path in `date`" >> $log_file
-	$detectHE_script $analyseMM_dir/$out_pre.analyseMM $HE_detect_dir_pre/$out_pre $arg_stat_det $ue_detect_args $SamTools_soft $PE  
+	$detectHE_script $analyseMM_dir/$out_pre.analyseMM $HE_detect_dir_pre/$out_pre $arg_stat_det $he_detect_args $SamTools_soft $PE  
 	echo "End detection HE of $file_path in `date`" >> $log_file
 fi
 

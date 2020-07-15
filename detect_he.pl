@@ -81,8 +81,8 @@ select((select($f_statistic), $|=1)[0]);
 open (my $ue_list,">$out_pre.HE.list");
 select((select($ue_list), $|=1)[0]);
 
-open (my $ue_det,">$out_pre.HE.Details");
-select((select($ue_det), $|=1)[0]);
+open (my $he_det,">$out_pre.HE.Details");
+select((select($he_det), $|=1)[0]);
 
 open (my $InFile,$source_file);
 select((select($InFile), $|=1)[0]);
@@ -611,29 +611,29 @@ while (<$InFile>)
 
 ########### $mm_types{$edit_type} report the real 1 of 12 edit_type instead 1 of 6
     print $ue_list "$edit_type\t($rna_sign)$Fields[0]\t$ref_chr\t$ref_base\t$dna_seq\t$read_seq\t$read_len\t$edit_len\t$edit_count\t$mm_not_edit\n";
-    print $ue_det "Edited read: ($rna_sign)$Fields[0], Edit type: $edit_type, Aligns to: $ref_chr:$ref_base-$dna_end_pos\nEdit sites: $edit_count, Mismatches sites in alignment: $mm_not_edit, Mismatches sites in cluster: $mm_in_clust, Alignment length: $read_len, Cluster length: $edit_len\nEdit indexes: $edit_loc, Mismatches indexes: $mm_loc\nDNA: $dna_seq\n     ";
+    print $he_det "Edited read: ($rna_sign)$Fields[0], Edit type: $edit_type, Aligns to: $ref_chr:$ref_base-$dna_end_pos\nEdit sites: $edit_count, Mismatches sites in alignment: $mm_not_edit, Mismatches sites in cluster: $mm_in_clust, Alignment length: $read_len, Cluster length: $edit_len\nEdit indexes: $edit_loc, Mismatches indexes: $mm_loc\nDNA: $dna_seq\n     ";
     
     foreach $b (0..$read_len-1)
     {
 	if (grep(/^$b$/, @edit_sites))
 	{
-	    print $ue_det "*";
+	    print $he_det "*";
 	    next;
 	}
 	if (grep(/^$b$/, @prim_edit_sites))
 	{
-	    print $ue_det "-";
+	    print $he_det "-";
 	    next;
 	}
 	if (grep(/^$b$/, @mm_sites))
 	{
-	    print $ue_det "X";
+	    print $he_det "X";
 	    next;
 	}
-	print $ue_det "|";
+	print $he_det "|";
 
     }
-    print $ue_det "\nRNA: $read_seq\n|) Match site,  X) Mismatch site, *) Edit site, -) Edit site with quality < $min_qual (not counted)\n\n";
+    print $he_det "\nRNA: $read_seq\n|) Match site,  X) Mismatch site, *) Edit site, -) Edit site with quality < $min_qual (not counted)\n\n";
 }
 
 

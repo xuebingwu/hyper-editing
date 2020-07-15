@@ -35,7 +35,7 @@ phred="33"
 gap="50000"
 bwa_run="1"
 sim_rep_file="/home/local/ARCS/xw2629/software/hyper-editing/data/unique_simple_repeats.txt"
-ue_detect_args="0.05 0.6 30 0.6 0.1 0.8 0.2" # args meaning: -Min of edit sites at Ultra-Edit read -Min fraction of edit sites/mm sites -Min sequence quality for counting editing event -Max fraction of same letter in cluster -Min of cluster length -Max initiate index of cluster -Min ending index of cluster
+he_detect_args="0.05 0.6 30 0.6 0.1 0.8 0.2" # args meaning: -Min of edit sites at Ultra-Edit read -Min fraction of edit sites/mm sites -Min sequence quality for counting editing event -Max fraction of same letter in cluster -Min of cluster length -Max initiate index of cluster -Min ending index of cluster
 
 
 # parse commandline arguments
@@ -106,7 +106,7 @@ echo "Paired-end        :" $paired_end
 echo "Phred score offset:" $phred
 echo "Max gap b/w pairs :" $gap
 echo "BWA run           :" $bwa_run
-echo "ue_detect_args    :" $ue_detect_args
+echo "he_detect_args    :" $he_detect_args
 echo "Simple repeat file:" $sim_rep_file
 
 echo "-------input file(s)-------"
@@ -135,4 +135,4 @@ genome_fasta=$genome.fa # path+full_name of the fasta file of the original genom
 
 ################################################################################################
 
-$run_he_script $genome_bwa_ind $genome_trans_bwa_ind $genome_fasta $phred $paired_end $gap $output $bwa_run $ue_detect_args $source_file $bwa_aln_soft $bwa_mem_soft $SamToFastq_soft $SamTools_soft $sim_rep_file
+$run_he_script $genome_bwa_ind $genome_trans_bwa_ind $genome_fasta $phred $paired_end $gap $output $bwa_run $he_detect_args $source_file $bwa_aln_soft $bwa_mem_soft $SamToFastq_soft $SamTools_soft $sim_rep_file

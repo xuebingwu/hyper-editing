@@ -1,11 +1,17 @@
 # hyper-editing
 Detect RNA editing and hyper-editing events from RNA-seq (local fastq files or SRA ID).
 
-Modified from https://github.com/hagitpt/Hyper-editing
+Modified from https://github.com/hagitpt/Hyper-editing, described in: [A genome-wide map of hyper-edited RNA reveals numerous new sites](https://www.nature.com/articles/ncomms5726), Hagit T. Porath, Shai Carmi & Erez Y. Levanon, Nature Communications 5: 4726 (2014) 
 
-Reference:
+## Installation
 
-[A genome-wide map of hyper-edited RNA reveals numerous new sites](https://www.nature.com/articles/ncomms5726),Hagit T. Porath, Shai Carmi & Erez Y. Levanon, Nature Communications 5: 4726 (2014) 
+Required tools: bwa, samtools, bam2fastx
+
+Optional: sra-tool (needed fetching fastq files from SRA ID (-sra_id)
+
+## Default genome and repeat files
+
+## Transform genomes
 
 ```
 Usage: hyper_editing [Options] -sra_id SRR***** | -fastq r1.fastq [-fastq2 r2.fastq]

@@ -27,7 +27,7 @@ he_detect_args="$9 ${10} ${11} ${12} ${13} ${14} ${15}"  # args meaning: -Min of
 unmapped_script="pre_unmapped.sh" # if needed insert the proper path before the script name
 TransRun_script="TransRun.sh" # if needed insert the proper path before the script name
 analyse_mm_script="analyse_mm.sh" # if needed insert the proper path before the script name
-detectHE_script="detect_ue.pl" # if needed insert the proper path before the script name
+detectHE_script="detect_he.pl" # if needed insert the proper path before the script name
 
 #files and directories
 unmap_dir="$dir_pre/unMap"
